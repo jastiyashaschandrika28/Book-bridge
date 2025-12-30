@@ -165,7 +165,8 @@
 </div>
 
 <script>
-const API_BASE = "https://bookbridge-backend.onrender.com"; // <-- change this
+const API_BASE = window.location.origin;
+ 
 
 let role = "";
 let type = "";
@@ -416,7 +417,7 @@ async function findBook() {
         ${item.tocFile ? `
           <p>
             <b>Table of Contents:</b>
-            <a href="http://localhost:5000/uploads/${item.tocFile}" target="_blank">
+            <a href="${API_BASE}/uploads/${item.tocFile}" target="_blank">
               View TOC
             </a>
           </p>` : ""}
@@ -437,4 +438,5 @@ function logout() { role=""; type=""; show("login-page"); }
 </script>
 </body>
 </html>
+
 
