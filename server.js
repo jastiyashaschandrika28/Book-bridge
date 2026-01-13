@@ -76,12 +76,19 @@ const Upload = mongoose.model("Upload", UploadSchema);
 
 // Signup
 app.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
-  const exists = await User.findOne({ email });
-  if (exists) return res.json({ success: false, message: "User exists" });
+  try {
+    const { username, email, password } = req.body;
+    const exists = await User.findOne({ email });
 
-  await new User({ username, email, password }).save();
-  res.json({ success: true, message: "Signup successful" });
+    if (exists)
+      return res.json({ success: false, message: "User exists" });
+
+    await new User({ username, email, password }).save();
+    res.json({ success: true, message: "Signup successful" });
+  } catch (err) {
+    console.error("Signup error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
 
 // Login
@@ -149,6 +156,7 @@ app.get("/", (req, res) => {
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`)
 );
+
 
 
 
