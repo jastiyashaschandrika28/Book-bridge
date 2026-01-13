@@ -165,6 +165,7 @@
 </div>
 
 <script>
+const API_BASE = window.location.origin;
 let role = "";
 let type = "";
 
@@ -195,7 +196,7 @@ function login() {
   const email = document.getElementById("login-email").value.trim();
   const pass = document.getElementById("login-pass").value.trim();
 
-  fetch("http://localhost:5000/login", {
+  fetch("${API_BASE}/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password: pass })
@@ -350,7 +351,7 @@ async function uploadFile() {
   formData.append("type", type);
 
   try {
-    const response = await fetch("http://localhost:5000/api/uploads", {
+    const response = await fetch("${API_BASE}/api/uploads", {
       method: "POST",
       body: formData   // 🚨 NO headers here
     });
@@ -377,7 +378,7 @@ async function findBook() {
   resultDiv.innerHTML = "";
 
   try {
-    const res = await fetch("http://localhost:5000/uploads");
+    const res = await fetch("${API_BASE}/uploads");
     const data = await res.json();
 
     const filtered = data.filter(item =>
@@ -406,7 +407,7 @@ async function findBook() {
         <p><b>Contact:</b> ${item.email}</p>
 
         <p><b>Front Page:</b></p>
-        <img src="http://localhost:5000/uploads/${item.frontFile}"
+        <img src="${API_BASE}/uploads/${item.frontFile}"
              style="width:100%;max-width:200px;border:1px solid #aaa"/>
 
         ${item.tocFile ? `
@@ -433,3 +434,4 @@ function logout() { role=""; type=""; show("login-page"); }
 </script>
 </body>
 </html>
+
