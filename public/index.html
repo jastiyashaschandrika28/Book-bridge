@@ -165,9 +165,6 @@
 </div>
 
 <script>
-const API_BASE = "https://book-bridge-0njb.onrender.com";
-
-
 let role = "";
 let type = "";
 
@@ -180,7 +177,7 @@ function signup() {
   if (!email.endsWith("@bmsce.ac.in")) { alert("Please use a @bmsce.ac.in email!"); return; }
   if (!username || !pass) { alert("Please fill all fields!"); return; }
 
-  fetch("${API_BASE}/signup", {
+  fetch("http://localhost:5000/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password: pass })
@@ -198,7 +195,7 @@ function login() {
   const email = document.getElementById("login-email").value.trim();
   const pass = document.getElementById("login-pass").value.trim();
 
-  fetch("${API_BASE}/login", {
+  fetch("http://localhost:5000/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password: pass })
@@ -351,11 +348,9 @@ async function uploadFile() {
   formData.append("branch", branch);
   formData.append("sem", sem);
   formData.append("type", type);
-  formData.append("author", document.getElementById("author-name")?.value || "");
-
 
   try {
-    const response = await fetch("${API_BASE}/api/uploads", {
+    const response = await fetch("http://localhost:5000/api/uploads", {
       method: "POST",
       body: formData   // 🚨 NO headers here
     });
@@ -382,7 +377,7 @@ async function findBook() {
   resultDiv.innerHTML = "";
 
   try {
-    const res = await fetch("${API_BASE}/uploads");
+    const res = await fetch("http://localhost:5000/uploads");
     const data = await res.json();
 
     const filtered = data.filter(item =>
@@ -411,13 +406,13 @@ async function findBook() {
         <p><b>Contact:</b> ${item.email}</p>
 
         <p><b>Front Page:</b></p>
-        <img src="${API_BASE}/uploads/${item.frontFile}"
+        <img src="http://localhost:5000/uploads/${item.frontFile}"
              style="width:100%;max-width:200px;border:1px solid #aaa"/>
 
         ${item.tocFile ? `
           <p>
             <b>Table of Contents:</b>
-            <a href="${API_BASE}/uploads/${item.tocFile}" target="_blank">
+            <a href="http://localhost:5000/uploads/${item.tocFile}" target="_blank">
               View TOC
             </a>
           </p>` : ""}
@@ -438,8 +433,3 @@ function logout() { role=""; type=""; show("login-page"); }
 </script>
 </body>
 </html>
-
-
-
-
-
